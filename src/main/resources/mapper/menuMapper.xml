@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+Windows -> Preferences -> 검색:xml
+  -> Xml(Wild Web Developer) -> 오른쪽 탭에서
+   체크 Download ML Resource .... -> Apply 버튼 클릭
+  
+namespace="com.green.menus.mapper.MenuMapper" : interface 위치 
+-->
+<mapper namespace="com.green.menus.mapper.MenuMapper">
+	
+	<!-- 메뉴 목록조회 -->
+	<select id="getMenuList"
+	        resultType="com.green.menus.dto.MenuDTO">
+			
+	SELECT     MENU_ID, MENU_NAME, MENU_SEQ
+	 FROM      MENUS
+	 ORDER BY  MENU_SEQ ASC
+	 	
+	</select>
+	
+	<!-- 메뉴 한개 조회 -->
+	<select  id="getMenu">
+	
+	SELECT     MENU_ID, MENu_NAME, MENU_SEQ
+	 FROM      MENUS
+	 WHERE     MENU_ID  =  #{ menu_id }
+	
+	</select>
+	
+	<!-- menu_id 롤 menu_name을 조회  -->
+	<select  id="getMenuName">
+	
+     SELECT  MENU_NAME
+      FROM   MENUS
+      WHERE  MENU_ID = #{ menu_id  }
+	
+	</select>
+	
+	<!-- 메뉴 추가 -->
+	<insert  id="insertMenu">
+	
+	INSERT INTO MENUS ( MENU_ID, MENU_NAME, MENU_SEQ )
+	 VALUES ( #{ menu_id }, #{ menu_name }, #{ menu_seq } )	
+	
+	</insert>
+	
+	<!-- 메뉴 삭제 -->
+	<delete  id="deleteMenu">
+	
+	DELETE FROM MENUS
+     WHERE MENU_ID = #{ menu_id }
+	
+	</delete>
+	
+	<!-- 메뉴 수정 -->
+	<update  id="updateMenu">
+	
+	UPDATE  MENUS  
+	 SET    MENU_NAME  =  #{ menu_name  },
+	        MENU_SEQ   =  #{ menu_seq   }
+	 WHERE  MENU_ID    =  #{ menu_id    }
+	
+	</update>
+	
+	<insert  id="insertMenu2">
+	
+	INSERT INTO MENUS (
+	    MENU_ID,
+	    MENU_NAME,
+	    MENU_SEQ
+	) VALUES ( 
+	    (  SELECT 'MENU' 
+	          || TRIM(TO_CHAR( NVL( MAX ( SUBSTR(MENU_ID, 5, 2) ), 0) + 1, '00')) 
+	       FROM MENUS    ),
+	    #{  menu_name  },
+	    (SELECT NVL( MAX(MENU_SEQ), 0) + 1 FROM MENUS)
+	)
+	 
+	</insert>
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

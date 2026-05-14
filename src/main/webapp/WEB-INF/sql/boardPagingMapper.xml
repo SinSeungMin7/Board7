@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.green.paging.mapper.BoardPagingMapper">
+	
+	<select  id="count" 
+	         resultType="java.lang.Integer">
+	SELECT
+	    COUNT( IDX ) AS CNT
+	FROM
+	    BOARD
+	WHERE
+	    MENU_ID = #{ menu_id  }
+	    
+	</select>
+	
+	<!-- BoardPagingList -->
+	<select  id="getBoardPagingList">
+	 SELECT
+	     IDX,
+	     TITLE,
+	     WRITER,
+	     TO_CHAR(REGDATE, 'YYYY-MM-DD') REGDATE,
+	     HIT
+	  FROM 
+	     BOARD
+	  <where>
+	    <if test="param1 != null and param1 != ''">
+	      AND MENU_ID = #{ param1 }   
+	    </if> 
+	    <if test="param2 != null and param2 != ''">
+	      AND TITLE   = #{ param2 }   
+	    </if> 
+	    <if test="param3 != null and param3 != ''">
+	      AND WRITER = #{ param3 }   
+	    </if> 
+	    <if test="param4 != null and param4 != ''">
+	      AND CONTENT = #{ param4 }   
+	    </if> 
+	  </where>
+	  ORDER  BY  IDX  DESC
+	  OFFSET  #{param5}  ROWS  FETCH  NEXT  #{param6}  ROWS ONLY  
+	        
+	
+	
+	</select>
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,66 @@
+Lombok -> Dto의 샹성자, Getter/Setter, ToString 자동으로 생성해준다
+
+설치 
+1번 방법 - version 영향을 많이 받는다. - 버전에 따라 에러가 많이 발생
+  https://projectlombok.org/download
+    lombok.jar 
+      더블클릭해서 실행
+        Specific location : SpringToolsForEclipse.exe 경로를 찾아서 선택
+          Install 버튼을 클릭한다
+    결과
+      SpringToolsForEclipse.exe 위치에 lombok.jar 를 복사하고
+      SpringToolsForEclipse.ini 파일의 마지막 라인에
+        ...
+        -javaagent:D:\dev\sts-5.0.1.RELEASE\lombok.jar 라인을 추가했다
+      
+  
+2번 방법 - 에러가 적음
+ https://projectlombok.org/setup/eclipse
+ 
+ SpringToolsForEclipse.exe -> Help 메뉴 
+   -> Install New Software
+      https://projectlombok.org/p2
+      아래나오는 체크
+      Trust Artifact 모두체크하고 Finish 클릭 
+       -> Restart 버튼클릭
+      
+사용하려면
+build.gradle 에 depencies 를 추가
+dependencies {
+    ...      
+    // lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+    ...
+}
+ 
+BoardDto.java
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+// @Data  // Getter/Setter/toString/HashCode, equals, BoardDto()
+// @Data - JPA 사용시 주의가 필요 toString() -> 문제로 
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor   // 기본생성자
+@AllArgsConstructor  // 모든인자생성자
+public class BoardDto {
+	// Fields
+	private  int      idx;
+	private  String   menu_id;
+	private  String   title;
+	private  String   content;
+	private  String   writer;
+	private  String   regdate;
+	private  int      hit;
+}
+
+ 
+ 
+ 
+ 

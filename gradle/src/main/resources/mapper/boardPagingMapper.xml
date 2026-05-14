@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.green.paging.mapper.BoardPagingMapper">
+	
+	<select  id="count" 
+	         resultType="java.lang.Integer">
+	SELECT
+	    COUNT( IDX ) AS CNT
+	FROM
+	    BOARD
+	 <where>
+	    <if test="boardDto.menu_id != null and boardDto.menu_id != ''">
+	      AND MENU_ID = #{ boardDto.menu_id }   
+	    </if> 
+	    <if test="searchType != null and searchType != '' 
+	        and keyword != null and keyword != ''">
+	      AND ${searchType}  Like '%' || #{ keyword } || '%'   
+	    </if> 	   
+	  </where>
+	    
+	</select>
+	
+	<!-- BoardPagingList -->
+	<select  id="getBoardPagingList">
+	 SELECT
+	     IDX,
+	     MENU_ID,
+	     TITLE,
+	     WRITER,
+	     TO_CHAR(REGDATE, 'YYYY-MM-DD') REGDATE,
+	     HIT
+	  FROM 
+	     BOARD
+	  <where>
+	    <if test="menu_id != null and menu_id != ''">
+	      AND MENU_ID = #{ menu_id }   
+	    </if> 
+	    <if test="searchType != null and searchType != '' 
+	        and keyword != null and keyword != ''">
+	      AND ${searchType}  Like '%' || #{ keyword } || '%'   
+	    </if> 	   
+	  </where>
+	  ORDER  BY  IDX  DESC
+	  OFFSET  #{ offset }  ROWS  FETCH  NEXT  #{ numOfRows }  ROWS ONLY  
+		
+	</select>
+	
+	<!-- getBoard -->
+	<select  id="getBoard">
+	 
+	 SELECT
+	    IDX,
+	    MENU_ID,
+	    TITLE,
+	    CONTENT,
+	    WRITER,
+	    TO_CHAR(REGDATE, 'YYYY-MM-DD HH24:MI:SS')  REGDATE  ,
+	    HIT
+	FROM
+	    BOARD
+	WHERE
+	    IDX  =  ${ idx  }
+	
+	</select>
+	
+	<!-- idx 의 조회수를 증가 -->
+	<update  id="incHit">
+	
+	UPDATE  BOARD
+	 SET    HIT = HIT + 1
+	 WHERE  IDX = #{ idx } 
+	
+	</update>
+	
+	<!-- insertBoard -->
+	<insert  id="insertBoard">
+	INSERT INTO board (
+	    IDX,
+	    MENU_ID,
+	    TITLE,
+	    CONTENT,
+	    WRITER
+	) VALUES ( 
+	    (SELECT NVL(MAX(IDX),0) + 1 FROM BOARD),
+	     #{ menu_id },
+	     #{ title   },
+	     #{ content },
+	     #{ writer  } 
+	)		
+	</insert>	
+	
+	<!-- 게시글 삭제 -->
+	<delete  id="deleteBoard">
+	
+	  DELETE  
+	   FROM   BOARD
+	   WHERE  IDX   =  ${ idx  }	
+	
+	</delete>
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

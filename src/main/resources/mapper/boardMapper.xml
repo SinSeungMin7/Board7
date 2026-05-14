@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.green.board.mapper.BoardMapper">
+	
+	<select  id="getBoardList" 
+	         resultType="com.green.board.dto.BoardDto">
+	SELECT
+	    IDX,
+	    MENU_ID,
+	    TITLE,
+	    WRITER,
+	    TO_CHAR(REGDATE,'YYYY-MM-DD') REGDATE,
+	    HIT
+	FROM
+	    BOARD
+	WHERE
+	    MENU_ID = #{ menu_id  }
+	ORDER BY
+	    IDX DESC
+	</select>
+	
+	<!-- idx 로 게시글 검색 -->
+	<select  id="getBoard" 
+	         resultType="com.green.board.dto.BoardDto">
+	         
+	   SELECT
+		    IDX,
+		    MENU_ID,
+		    TITLE,
+		    CONTENT,
+		    WRITER,
+		    TO_CHAR(REGDATE, 'YYYY-MM-DD HH24:MI:SS')   REGDATE,
+		    HIT
+		FROM
+		    BOARD
+		WHERE
+		    IDX  = #{ idx  }
+		    	
+	</select>
+	
+	<!-- idx 의 조회수를 증가 -->
+	<update  id="incHit">
+	
+	UPDATE  BOARD
+	 SET    HIT = HIT + 1
+	 WHERE  IDX = #{ idx } 
+	
+	</update>
+	
+	<insert  id="insertBoard">
+	INSERT INTO board (
+	    IDX,
+	    MENU_ID,
+	    TITLE,
+	    CONTENT,
+	    WRITER
+	) VALUES ( 
+	    (SELECT NVL(MAX(IDX),0) + 1 FROM BOARD),
+	     #{ menu_id },
+	     #{ title   },
+	     #{ content },
+	     #{ writer  } 
+	)
+		
+	</insert>	
+	
+	<!-- 게시글 삭제 -->
+	<delete  id="deleteBoard">
+	
+	DELETE 
+	 FROM    BOARD
+	 WHERE   IDX = #{ idx }
+	
+	</delete>
+	
+	<!-- 게시물 수정 -->
+	<update  id="updateBoard">
+	
+	UPDATE   BOARD
+	 SET     TITLE   =  #{ title   },
+	         CONTENT =  #{ content }
+	 WHERE   IDX     =  #{ idx     }   
+	
+	</update>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

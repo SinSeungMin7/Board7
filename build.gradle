@@ -1,0 +1,58 @@
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '4.0.5'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.green'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    // Springboot
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	
+	//mybatis	
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:4.0.1'
+	
+	// lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	
+	// devtools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	
+	// oracle
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+	
+	// jsp 설정 추가
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'            // tomcat jsper
+	implementation 'jakarta.servlet:jakarta.servlet-api'                    // jsp servlet-api
+	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api'  // jstl
+	runtimeOnly 'org.glassfish.web:jakarta.servlet.jsp.jstl'                // jstl 
+	
+	
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat-runtime'
+	
+	// testing
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:4.0.1'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

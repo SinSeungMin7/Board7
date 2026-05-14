@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.green.user.mapper.UserMapper">
+	
+	<!-- 사용자 추가 -->
+	<insert  id = "insertUser">
+	
+    INSERT INTO TUSER (
+	    USERID,
+	    PASSWD,
+	    USERNAME,
+	    EMAIL,
+	    UPOINT,
+	    REGDATE
+	) VALUES (
+	    #{ userid   },
+	    #{ passwd   },
+	    #{ username },
+	    #{ email    },
+	    1000         ,
+	    sysdate	
+	)
+	
+	</insert>
+	
+	<!-- 사용자 목록 -->
+	<select id="getUserList">
+	
+	SELECT
+	    USERID,
+	    USERNAME,
+	    EMAIL,
+	    UPOINT,
+	    TO_CHAR( REGDATE, 'YYYY-MM-DD') REGDATE
+	FROM
+	    TUSER
+	ORDER  BY  USERID ASC	
+	
+	</select>
+	
+	<!--  사용자 조회 -->
+	<select  id="getUser">
+	
+	SELECT
+	    USERID,
+	    PASSWD,
+	    USERNAME,
+	    EMAIL,
+	    UPOINT,
+	    TO_CHAR( REGDATE, 'YYYY-MM-DD HH24:MI:SS') REGDATE
+	FROM
+	    TUSER
+	WHERE
+	    USERID  =  #{ userid  }
+	
+	</select>
+	
+	<!--  로그인 -->
+	<select  id="getLogin">
+	
+	SELECT
+	    USERID,
+	    PASSWD,
+	    USERNAME,
+	    EMAIL,
+	    UPOINT,
+	    TO_CHAR( REGDATE, 'YYYY-MM-DD HH24:MI:SS') REGDATE
+	FROM
+	    TUSER
+	WHERE
+	    USERID  =  #{ userid  }
+	AND 
+	    PASSWD  =  #{ passwd  }    
+	
+	</select>
+	
+	<!-- 아이디 중복확인 -->
+	<select  id="getIdDupCheck">
+	 
+	 SELECT 
+	        USERID,
+		    PASSWD,
+		    USERNAME,
+		    EMAIL,
+		    UPOINT,
+		    TO_CHAR( REGDATE, 'YYYY-MM-DD HH24:MI:SS') REGDATE
+	  FROM   TUSER
+	  WHERE  USERID = #{ userid }
+	
+	</select>
+	
+	
+	<!-- 사용자 삭제 -->
+	<delete  id="deleteUser">
+	
+	DELETE  FROM  TUSER
+	 WHERE  USERID = #{ userid  }
+	
+	</delete>
+		
+	<!-- 사용자 수정 : oldpwd,  arg0, param1 -->
+	<update  id="updateUser">
+	
+	UPDATE  TUSER
+	 SET    PASSWD    = #{ userDto.passwd   },
+	        USERNAME  = #{ userDto.username },
+	        EMAIL     = #{ userDto.email    }
+	 WHERE  USERID    = #{ userDto.userid   }
+	  AND   PASSWD    = #{ oldpwd   } 
+	
+	</update>
+	
+	<!-- 사용자 수정 : map , 
+	     passwd (작동)
+	     map.passwd( 오류발생 ) -->
+	<update  id="updateUser2">
+	
+	UPDATE  TUSER
+	 SET    PASSWD    = #{ passwd   },
+	        USERNAME  = #{ username },
+	        EMAIL     = #{ email    }
+	 WHERE  USERID    = #{ userid   }
+	  AND   PASSWD    = #{ oldpwd   } 
+	
+	</update>
+  
+	
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
