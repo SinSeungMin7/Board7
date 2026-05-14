@@ -40,7 +40,7 @@
   	height : 300px;
   }
   
-#table1 {
+ #table1 {
      margin-bottom : 150px;
      td {
         &:nth-of-type(1) {
@@ -90,40 +90,40 @@
   input[name="title"]
   ,textarea {
      padding:5px;
-  }  
+  }
 </style>
 <body> 
   <main>
     <%@include file="/WEB-INF/include/menuspaging.jsp" %>  
   
-    <h2 class="h2"><b id="mname">${ menu_name }</b>게시글 수정</h2>
+    <h2 class="h2"><b id="mname">${ menu_name }</b> 게시글 수정</h2>
     <form  action="/BoardPaging/Update" method="post">
-     <input type="hidden" name="idx" value="${ board.idx }" />
-     <input type="hidden" name="menu_id" value="${ menu_id }" />
-     <input type="hidden" name="nowpage" value="${ nowpage }" />
+     <input type="hidden" name="idx"     value="${ board.idx }" />
+     <input type="hidden" name="menu_id" value="${ menu_id   }" />
+     <input type="hidden" name="nowpage" value="${ nowpage   }" />
      <table id="table1">
-     <tr>
-     	<td>번호</td>
-     	<td>${board.idx}</td>
-     	<td>조회수</td>
-     	<td>${board.hit}</td>
-     </tr>
-     <tr>
-     	<td>작성자</td>
-     	<td>${ board.writer }</td>
-     	<td>작성일</td>
-     	<td>${ board.regdate }</td>
-     </tr>
+      <tr>
+        <td>번호</td>
+        <td>${ board.idx }</td>
+        <td>조회수</td>
+        <td>${ board.hit }</td>
+      </tr>
+      <tr>
+        <td>작성자</td>
+        <td>${ board.writer  }</td>
+        <td>작성일</td>
+        <td>${ board.regdate }</td>
+      </tr>
       <tr>
         <td><span class="red">*</span>제목</td>
-        <td colspan="3">
-          <input type="text"     name="title"  value="${board.title}" />
+        <td  colspan="3">
+          <input type="text"     name="title"  value="${ board.title }" />
         </td>
-      </tr>  
+      </tr>      
       <tr>
-        <td><span class="red">*</span>내용</td>
+        <td>내용</td>
         <td colspan="3">
-        <textarea name="content">${ board.content }</textarea>
+        <textarea name="content">${board.content}</textarea>
         </td>        
       </tr>   
       <tr>

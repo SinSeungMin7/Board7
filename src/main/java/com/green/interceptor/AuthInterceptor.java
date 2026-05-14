@@ -29,7 +29,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		String  requestURI  = request.getRequestURI();    // /Board/List, /BoardPaging/List
 		String  qryStr      = request.getQueryString();   // menu_id=MENU01, menu_id=MENU01&nowpage=1 
 		String  loc         = requestURI + "?" + qryStr;  // /BoardPaging/List?menu_id=MENU01&nowpage=1
-		//System.out.println("요청 주소:" + loc);
+		System.out.println("요청 주소:" + loc);
 		
 		// /Users/LoginForm", "/Users/Login" 제외
 		if( requestURI.contains("/Users/LoginForm" )  ) {

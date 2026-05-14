@@ -2,15 +2,13 @@ package com.green.pds.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class FilesDto {
-	private int    file_num;
-	private int    idx;
-	private String filename;
-	private String fileext;
-	private String sfilename;
+	private  int      file_num;
+	private  int      idx;
+	private  String   filename;
+	private  String   fileext;
+	private  String   sfilename;
 }

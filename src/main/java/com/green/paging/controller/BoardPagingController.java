@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.green.BoardApplication;
 import com.green.board.dto.BoardDto;
-import com.green.config.WebMvcConfig;
 import com.green.interceptor.AuthInterceptor;
 import com.green.menus.dto.MenuDTO;
 import com.green.menus.mapper.MenuMapper;
@@ -21,18 +20,11 @@ import com.green.paging.mapper.BoardPagingMapper;
 @RequestMapping("/BoardPaging")
 public class BoardPagingController {
 
-    private final WebMvcConfig webMvcConfig;
-
 	@Autowired
 	private  MenuMapper         menuMapper;
 	
 	@Autowired
 	private  BoardPagingMapper  boardPagingMapper;
-
-
-    BoardPagingController(WebMvcConfig webMvcConfig) {
-        this.webMvcConfig = webMvcConfig;
-    }
 
   
 	// /BoardPaging/List?menu_id=MENU01&nowpage=1
@@ -79,7 +71,7 @@ public class BoardPagingController {
 		
 		mv.addObject("nowpage",    nowpage);				
 		mv.addObject("menu_id",    menu_id);  // 현재 메뉴정보
-		
+				
 		mv.addObject("bList",      list);
 		mv.addObject("searchDto",  searchDto);
 		
@@ -100,14 +92,14 @@ public class BoardPagingController {
 		boardPagingMapper.incHit( boardDto );
 		
 		// idx 로 게시글 한 개 조회
-		BoardDto  board   =  boardPagingMapper.getBoard( boardDto  );
+		BoardDto       board     =  boardPagingMapper.getBoard( boardDto  );
 		
 		// 조회된 content 의 "\n" -> "<br>"
-		String  content = board.getContent();
-		if(content != null)
-			board.setContent(content.replace("\n", "<br>"));
+		String         content   =  board.getContent();
+		if( content != null )
+			board.setContent( content.replace("\n", "<br>") );
 		
-		String  menu_id   =  boardDto.getMenu_id();		
+		String         menu_id   =  boardDto.getMenu_id();				
 		ModelAndView  mv  =  new ModelAndView();
 		mv.setViewName("boardpaging/view");
 		mv.addObject("menuList", menuList );
@@ -179,50 +171,51 @@ public class BoardPagingController {
 		
 	}
 	
-	// 게시글 수정 
-	// /BoardPaging/UpdateForm?idx=4811&menu_id=MENU01&nowpage=1
+	// 게시글 수정(페이징)
+	// /BoardPaging/UpdateForm?idx=809&menu_id=MENU01&nowpage=1
 	@RequestMapping("/UpdateForm")
-	public ModelAndView updateForm(BoardDto boardDto, int nowpage) {
-
-		// 메뉴 목록조회
-		List<MenuDTO> menuList = menuMapper.getMenuList();
+	public  ModelAndView  updateForm(BoardDto boardDto, int nowpage) {
 		
-		// 수정할 페이지에 출력할 자료를 idx 로 조회
-		BoardDto  board = boardPagingMapper.getBoard(boardDto); 
+		// 메뉴 목록
+		List<MenuDTO>  menuList  =  menuMapper.getMenuList();
+		
+		// 수정할 페이지에 출력할 자료를 idx 롤 조회
+		BoardDto       board     =  boardPagingMapper.getBoard( boardDto );    
 		
 		// 수정할 페이지로 이동
-		String  menu_id = boardDto.getMenu_id();
-		ModelAndView mv = new ModelAndView();
+		String        menu_id    =  boardDto.getMenu_id();
+		ModelAndView  mv         =  new ModelAndView();
 		mv.setViewName("boardpaging/update");
 		
 		mv.addObject("menuList", menuList);
 		
-		mv.addObject("menu_id", menu_id);
-		mv.addObject("nowpage", nowpage);
+		mv.addObject("menu_id",  menu_id );
+		mv.addObject("nowpage",  nowpage );
 		
-		mv.addObject("board", board);
+		mv.addObject("board",    board   );
 		
-		return mv;
+		return  mv;
 	}
 	
-	// 수정
 	// /BoardPaging/Update
-	// idx=809&title=aaaa&content=aaaa     &menu_id=MENU01&nowpage=1
+	// idx=809&title=aaaa&content=aaaa    &menu_id=MENU01&nowpage=1
 	@RequestMapping("/Update")
-	public ModelAndView update(BoardDto boardDto, int nowpage) {
+	public  ModelAndView   update( BoardDto boardDto, int nowpage  ) {
 		
 		// 넘어온 값으로 db 정보 수정
-		boardPagingMapper.updateBoard(boardDto);
+		boardPagingMapper.updateBoard(  boardDto );
 		
 		// List 로 돌아간다
-		String        menu_id  =  boardDto.getMenu_id(); 
+		String        menu_id  =  boardDto.getMenu_id();  
 		ModelAndView  mv       =  new ModelAndView();
 		String        loc      =  """
 				redirect:/BoardPaging/List?menu_id=%s&nowpage=%d
-				""".formatted(menu_id, nowpage);		
-		mv.setViewName( loc );		
-		return mv;
+				""".formatted( menu_id, nowpage );
+		mv.setViewName( loc );
+		return        mv;
 	}
+	
+	
 }
 
 

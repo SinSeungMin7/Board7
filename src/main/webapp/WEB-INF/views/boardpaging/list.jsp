@@ -129,7 +129,7 @@
 	  
 	</main>
 	
-	<!-- Javascript -->
+	<!--Javascript -->
 	<script>
 	  const  mnameEl    =  document.querySelector('#mname');
 	  let    menunameEl =  document.querySelector('.menu .active')

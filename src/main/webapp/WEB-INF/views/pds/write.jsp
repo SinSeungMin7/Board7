@@ -45,12 +45,13 @@
 </style>
 <body> 
   <main>
-    <%@include file="/WEB-INF/include/menuspaging.jsp" %>  
+    <%@include file="/WEB-INF/include/menuspdspaging.jsp" %>  
   
-    <h2 class="h2"><b id="mname">${ menu_name }</b> 게시글 수정</h2>
-    <form  action="/BoardPaging/Update" method="post">
-     <input type="hidden" name="menu_id" value="${ menu_id }" />
-     <input type="hidden" name="nowpage" value="${ nowpage }" />
+    <h2 class="h2"><b id="mname"></b> 자료실 새 글 쓰기</h2>
+    <form  action="/Pds/Write" method="post"
+           enctype = "multipart/form-data" >
+     <input type="hidden" name="menu_id" value="${ map.menu_id }" />
+     <input type="hidden" name="nowpage" value="${ map.nowpage }" />
      <table id="table1">
       <tr>
         <td><span class="red">*</span>제목</td>
@@ -66,13 +67,20 @@
       <tr>
         <td>내용</td>
         <td><textarea name="content"></textarea></td>        
-      </tr>   
+      </tr> 
+      <tr> 
+        <td>파일</td>  
+        <td >
+          <input type="button"  id="btnAddFile"  value="파일추가(최대 100MByte)" />
+          <div  id = "tdfile">
+          <input type="file"    name="upfile"    class="upfile" multiple /><br>
+          </div>        
+        </td>  
+      </tr>  
       <tr>
         <td colspan="2">
           <input type="submit"  value="추가" />
-          <input type="button"  value="목록" 
-            onclick="location.href='/BoardPaging/List?menu_id=${menu_id}&nowpage=${nowpage}'"
-          />        
+          <input type="button"  value="목록" id="goList" />    
         </td>
       </tr>
      </table>    
@@ -81,11 +89,29 @@
   </main>
   
     <script>
+      // 메뉴제목출력
 	  const  mnameEl    =  document.querySelector('#mname');
 	  let    menunameEl =  document.querySelector('.menu .active')
 	  mnameEl.innerHTML =  menunameEl.innerHTML;
 	  
-	  // Javascript 코딩 : client validation
+	  // 목록으로 이동
+	  const  goListEl  = document.querySelector('#goList')
+	  goListEl.onclick = function() {
+		  location.href='/Pds/List?menu_id=${map.menu_id}&nowpage=${map.nowpage}'
+	  }	  
+	  
+	  // 파일입력창 추가
+	  const  btnAddFileEl  =  document.querySelector('#btnAddFile')
+	  const  tdfileEl      =  document.querySelector('#tdfile')
+	  let    tag           =  '<input type="file" name="upfile" class="upfile" multiple /><br>'  
+	  let    html          =  tdfileEl.innerHTML 
+	  btnAddFileEl.addEventListener('click', function() {
+		  html               +=  tag
+		  alert(html)
+		  tdfileEl.innerHTML = html 			   
+	  })
+	  
+	  // 입력항목 체크
 	  
 	</script>
   

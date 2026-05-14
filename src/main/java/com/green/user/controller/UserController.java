@@ -198,16 +198,16 @@ public class UserController {
 		HttpSession  session    =  request.getSession();
 		session.setAttribute("login", user);
 		
-		String  loc = "";
-		// http://localhost:8080/ 즉 "/" 주소가 이전주소일때는 
-		// session.getAttribute("loc) -> null 이다 /Users/null 로 인식
-		if(session.getAttribute("loc") == null )
+		String       loc        =  "";  
+		// http://localhost:8080  즉 "/" 주소가 이전주소일때는 
+		//   session.getAttribute("loc") -> null 이다 , 이동주소 :  /Users/null 로 인식
+		if( session.getAttribute("loc") == null )
 			loc = "redirect:/";
-		else
+		else 
 			loc = "redirect:" + session.getAttribute("loc").toString();
-		System.out.println("loc" + loc);
+		System.out.println("loc:" + loc);
 	
-		return  loc;
+		return   loc;
 		
 	}
 	

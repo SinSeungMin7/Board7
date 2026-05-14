@@ -11,8 +11,8 @@
 	FROM
 	    BOARD
 	 <where>
-	    <if test="boardDto.menu_id != null and boardDto.menu_id != ''">
-	      AND MENU_ID = #{ boardDto.menu_id }   
+	    <if test="menu_id != null and menu_id != ''">
+	      AND MENU_ID = #{ menu_id }   
 	    </if> 
 	    <if test="searchType != null and searchType != '' 
 	        and keyword != null and keyword != ''">
@@ -21,6 +21,38 @@
 	  </where>
 	    
 	</select>
+	
+	<!-- getPdsList -->
+	<select  id="getPdsList">
+	
+	   SELECT
+	     IDX,
+	     MENU_ID,
+	     TITLE,
+	     WRITER,
+	     (
+	       SELECT  COUNT(FILE_NUM) FROM FILES F
+	        WHERE  F.IDX = B.IDX 
+	     ) FILESCOUNT,
+	     TO_CHAR(REGDATE, 'YYYY-MM-DD') REGDATE,
+	     HIT
+	  FROM 
+	     BOARD  B
+	  <where>
+	    <if test="menu_id != null and menu_id != ''">
+	      AND MENU_ID = #{ menu_id }   
+	    </if> 
+	    <if test="searchType != null and searchType != '' 
+	        and keyword != null and keyword != ''">
+	      AND ${searchType}  Like '%' || #{ keyword } || '%'   
+	    </if> 	   
+	  </where>
+	  ORDER  BY  IDX  DESC
+	  OFFSET  #{ offset }  ROWS  FETCH  NEXT  #{ numOfRows }  ROWS ONLY  
+		
+	
+	</select>
+
 	
 	
 </mapper>
