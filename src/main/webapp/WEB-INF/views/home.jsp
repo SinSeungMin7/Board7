@@ -35,6 +35,10 @@
     <div><a href="/BoardPaging/WriteForm?menu_id=MENU01&nowpage=1">게시글 추가(페이징)</a></div>
     <div>&nbsp;</div>
     
+    <div><a href="/Pds/List?menu_id=MENU01&nowpage=1">자료실</a></div>
+    <div><a href="/Pds/WriteForm?menu_id=MENU01&nowpage=1">자료실 등록</a></div>
+    <div>&nbsp;</div>
+    
     <div>
       ${sessionScope.login.username} 님 환영합니다<br>
       당신의 가입일은 ${sessionScope.login.regdate} 입니다<br>
