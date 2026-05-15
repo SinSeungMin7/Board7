@@ -1,0 +1,62 @@
+Board            Files
+idx  title
+200  a           a1.txt, b1.txt, c1.txt 
+199  b
+198  c           d1.txt, e1.txt  
+
+Board            Files
+idx  title       file_num, filename, .., idx
+200  a           1         a1.txt        200
+199  b           2         b1.txt        200
+198  c           3         c1.txt        200  
+                 4         d1.txt        198
+                 5         e1.txt        198
+
+data type
+ 파일의 자체의 정보를 저장가능한 type 이 존재
+ file     BLOB   Binary Large Object 128 terabyte
+  web 에서 파일을 전송받아 저장하는 곳에서는 사용불가
+ 
+   서버 <- 클라이언트 1  파일업로드 
+   1. 파일업로드 
+   2. insert file column 에 이진정보저장 : record lock 이 걸림
+   3. insert 가 끝나면 lock 이 해제
+   4. 이시간에 다른 클라이언트2는 아무것도 할 수 없다
+   5. web 에서는 blob 에 클라이언트가 직접 insert 하지 않도록 해야한다
+
+   -> insert 를 위해서  web 에 사용할 db 칼럼은 blob 사용하지 말 것
+
+   파일업로드 => 1) 클라이언트 컴퓨터파일 -> 서버로 전송
+                    html <form enctype="multipart/form-data">
+                         <input type="text" name=""/>  : string
+                         <input type="file" name=""/>  : binary
+                 2) 서버가 받는것은 
+                    servlet 에 있는 request를 이용한다 
+                    과거(spring 3) 에는 라이브러리 사용했다 
+                 3) 서버에 저장방법
+                    3-1) 파일은 폴더에 저장 : d:/dev/springboot/data/    
+                         기존파일이 있으면 새로운파일명을 만들어서 저장 - 코딩필요
+                         sfilename : 실제 저장된 파일명   
+                    3-2) db 에는 파일 정보만 저장 
+                         Files  filename varchar2  <- 업로된 파일명
+                                sfilename varchar2 <- 실제저장된 파일명   
+
+      
+
+
+   
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+

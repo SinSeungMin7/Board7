@@ -134,9 +134,24 @@
 	
 	<!--Javascript -->
 	<script>
-	  const  mnameEl    =  document.querySelector('#mname');
-	  let    menunameEl =  document.querySelector('.menu .active')
-	  mnameEl.innerHTML =  menunameEl.innerHTML;
+	  // pagingpds.jsp 의 현재 페이지 색깔 변경
+	  const  mnameEl        =  document.querySelector('#mname');
+	  let    menunameEl     =  document.querySelector('.menu .active')
+	  mnameEl.innerHTML     =  menunameEl.innerHTML;
+	  
+	  // 검색한 후 searchType 을 선택한 내용 변경	   
+	  let    curSearchType  =  '${ map.searchType  }'  // 서버변수
+	  const  optionEls      =  document.querySelectorAll( "option" );
+	  let    index          =  0;
+	  switch(  curSearchType ) {
+	  case "":
+	  case "title"   : index = 0; break;
+	  case "content" : index = 1; break;
+	  case "writer"  : index = 2; break;
+	  }
+	  optionEls[index].selected = true;
+	  
+  
 	</script>
 	
 </body>

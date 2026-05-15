@@ -34,6 +34,9 @@
   input[name=userid] {
      width : 65%;
   }
+  #btnAddFile {
+     width  :  300px;
+  }
   
   textarea {
   	width  : 100%;
@@ -70,11 +73,9 @@
       </tr> 
       <tr> 
         <td>파일</td>  
-        <td >
+        <td id = "tdfile">
           <input type="button"  id="btnAddFile"  value="파일추가(최대 100MByte)" />
-          <div  id = "tdfile">
-          <input type="file"    name="upfile"    class="upfile" multiple /><br>
-          </div>        
+          <input type="file"    name="upfile"    class="upfile" multiple /><br>    
         </td>  
       </tr>  
       <tr>
@@ -105,10 +106,14 @@
 	  const  tdfileEl      =  document.querySelector('#tdfile')
 	  let    tag           =  '<input type="file" name="upfile" class="upfile" multiple /><br>'  
 	  let    html          =  tdfileEl.innerHTML 
-	  btnAddFileEl.addEventListener('click', function() {
-		  html               +=  tag
-		  alert(html)
-		  tdfileEl.innerHTML = html 			   
+	  // js 에서 실행할때 새로 추가된 버튼은 이벤트가 한번만 작동 btnAddFileEl
+	  // 해결 : 이벤트를 부모 element 에 설정
+	  tdfileEl.addEventListener('click', function( e ) {
+		  console.dir( e.target )  // #btnAddFile, .upfile
+		  if( e.target.id == 'btnAddFile' ) {
+			  html               +=  tag
+			  tdfileEl.innerHTML  = html 		
+		  }
 	  })
 	  
 	  // 입력항목 체크
