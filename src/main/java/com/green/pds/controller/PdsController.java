@@ -28,8 +28,8 @@ public class PdsController {
 	@Autowired
 	private   PdsMapper    pdsMapper;
 	
-	@Autowired
-	private   PdsService   pdsService;
+	@Autowired  // 컨테이너안에서 부품을 찾아서 넣어주세요 라는뜻 
+	private   PdsService   pdsService;   // 부품을 연결해서 사용하도록 해줌 menuMapper와 같이
 	
 	// /Pds/List?menu_id=MENU01&nowpage=1
 	// /Pds/List?menu_id=MENU01&nowpage=3&searchType=title&keyword=11
@@ -104,29 +104,33 @@ public class PdsController {
 	}
 	
 	// /Pds/Write
-	// text   : menu_id=MENU01, nowpage=1, title=ㅁㅁㅁ, writer=ㅁㅁㅁ, content=ㅁㅁㅁ -> map 으로 받을거다
-	// binary : upfile=(binary), upfile=(binary), upfile=(binary)                 -> uploadfiles 
+	// text   : menu_id=MENU01, nowpage=1,	title=aa, writer=aa, content=aaa -> map
+	// binary : upfile=(binary), upfile=(binary), upfile=(binary)            -> uploadfiles
 	@RequestMapping("/Write")
-	public ModelAndView write(
-			@RequestParam                 HashMap<String, Object> map,
-			@RequestParam(value="upfile") MultipartFile [] uploadfiles  
+	public  ModelAndView   write(
+		@RequestParam                  HashMap<String, Object>  map,
+		@RequestParam(value="upfile")  MultipartFile []         uploadfiles    // MultipartFile 하나가 upfile 한개의 정보를 갖기 때문에 배열로 표시
 			) {
-		System.out.println("map"         + map);
-		System.out.println("uploadFiles" + uploadfiles);
+		System.out.println("map:"         + map);
+		System.out.println("uploadfiles:" + uploadfiles);
 		
-		// 넘어온 정보를 파일과 db 에 저장한다
-		pdsService.setWrite( map, uploadfiles );
+		//  넘어온 정보를 파일과 db 에 저장한다
+		pdsService.setWrite( map,  uploadfiles  );	
 		
-		String  menu_id = String.valueOf( map.get("menu_id") );
-		int     nowpage = Integer.parseInt( String.valueOf( map.get("nowpage") ) );
+		// 저장후 돌아가기 
+		String  menu_id      =  String.valueOf( map.get("menu_id") );
+		int     nowpage      =  Integer.parseInt(String.valueOf(map.get("nowpage") ) );
 		
-		ModelAndView mv = new ModelAndView();
-		String      loc = """
+		ModelAndView   mv    =  new ModelAndView();
+		String         loc   =  """
 				redirect:/Pds/List?menu_id=%s&nowpage=%d
-				""".formatted( menu_id ,nowpage );
-		mv.setViewName(loc);
-		return mv;
+				""".formatted( menu_id, nowpage ); 
+		mv.setViewName( loc );
+		return         mv;
+		
 	}
+	
+	
 	
 	// 내용보기
 	// /Pds/View?idx=127&menu_id=MENU01&nowpage=3
@@ -147,7 +151,6 @@ public class PdsController {
 		return         mv;
 		
 	}
-	
 	
 	
 }

@@ -14,4 +14,8 @@ public interface PdsMapper {
 
 	List<PdsDto> getPdsList(HashMap<String, Object> map);
 
+	void setWrite(HashMap<String, Object> map);
+
+	void setFileWriter(HashMap<String, Object> map);
+
 }

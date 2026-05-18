@@ -24,7 +24,6 @@
 	
 	<!-- getPdsList -->
 	<select  id="getPdsList">
-	
 	   SELECT
 	     IDX,
 	     MENU_ID,
@@ -49,10 +48,53 @@
 	  </where>
 	  ORDER  BY  IDX  DESC
 	  OFFSET  #{ offset }  ROWS  FETCH  NEXT  #{ numOfRows }  ROWS ONLY  
-		
-	
 	</select>
 
+	<!-- setWrite : Board 에 저장 -->
+	<select id="setWrite">
+	  INSERT INTO BOARD (
+	  	IDX,
+	  	MENU_ID,
+	  	TITLE,
+	  	WRITER,
+	  	CONTENT,
+	  	REGDATE,
+	  	HIT
+	  )
+	   VALUES (
+	    (SELECT NVL(MAX(IDX),0)+ 1 FROM BOARD),
+	  	#{menu_id},
+	  	#{title},
+	  	#{writer},
+	  	#{content},
+	  	SYSDATE,
+	  	0
+	  )
+	</select>
+	
+	<!-- setFileWriter : Files 에 insert
+	     insert all : 한번에 여러줄을 insert 할 수 있는 명령
+	   	(SELECT NVL(MAX(FILE_NUM),0)FROM FILES), -> 한번만 실행 : 무결성제약조건 에러발생
+	-->
+	<insert id="setFileWriter">
+	
+	  <foreach collection = "fileList"
+	           item       = "file"
+	           index      = "i" 
+	           open       = "INSERT ALL"       
+	           close      = "SELECT * FROM DUAL"
+	           separator  = " ">
+	           
+	   INTO FILES VALUES(
+	    (SELECT NVL(MAX(FILE_NUM),0)FROM FILES) + #{i} + 1,
+		(SELECT MAX( IDX ) FROM BOARD),
+		#{file.filename  },
+		#{file.fileext   },
+		#{file.sfilename }
+	   )
+	   
+	  </foreach>
+	</insert>
 	
 	
 </mapper>
