@@ -96,6 +96,47 @@
 	  </foreach>
 	</insert>
 	
+	<!-- setReadConuntUpdate : 조회수 -->
+	<update id="setReadConuntUpdate">
+	  UPDATE BOARD
+	  SET    HIT = HIT + 1
+	  WHERE  IDX = #{idx} 
+	</update>
+	
+	<!-- getPds : 게시글 조회 -->
+	<select id="getPds">
+	  SELECT IDX,
+	         MENU_ID,
+	         TITLE,
+	         CONTENT,
+	         WRITER,
+	         TO_CHAR(REGDATE, 'YYYY-MM-DD HH24:MI:SS') REGDATE,
+	         HIT
+	   FROM  BOARD
+	   WHERE IDX = #{idx}
+	</select>
+	
+	<!-- getFileList : idx 에 해당하는 파일목록 -->
+	<select id="getFileList">
+	  SELECT FILE_NUM,
+			 IDX,
+			 FILENAME,
+			 FILEEXT,
+			 SFILENAME
+	  FROM   FILES
+	  WHERE  IDX = #{idx}
+	</select>
+	
+	<!-- getFileInfo : file_num 로 파일정보를 조회 -->
+	<select id="getFileInfo">
+	  SELECT FILE_NUM,
+			 IDX,
+			 FILENAME,
+			 FILEEXT,
+			 SFILENAME
+	  FROM   FILES
+	  WHERE  FILE_NUM = #{file_num}
+	</select>
 	
 </mapper>
 
