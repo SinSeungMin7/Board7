@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.green.config.WebMvcConfig;
 import com.green.menus.dto.MenuDTO;
 import com.green.menus.mapper.MenuMapper;
 import com.green.paging.dto.Pagination;
@@ -37,6 +37,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/Pds")
 public class PdsController {
+
+    private final WebMvcConfig webMvcConfig;
 	
 	@Value("${part1.upload-path}")
 	private   String       uploadPath; 
@@ -48,7 +50,11 @@ public class PdsController {
 	private   PdsMapper    pdsMapper;
 	
 	@Autowired  // 컨테이너안에서 부품을 찾아서 넣어주세요 라는뜻 
-	private   PdsService   pdsService;   // 부품을 연결해서 사용하도록 해줌 menuMapper와 같이
+	private   PdsService   pdsService;
+
+    PdsController(WebMvcConfig webMvcConfig) {
+        this.webMvcConfig = webMvcConfig;
+    }   // 부품을 연결해서 사용하도록 해줌 menuMapper와 같이
 	
 	// /Pds/List?menu_id=MENU01&nowpage=1
 	// /Pds/List?menu_id=MENU01&nowpage=3&searchType=title&keyword=11
@@ -182,6 +188,7 @@ public class PdsController {
 		
 	}
 	
+	// 삭제
 	// /Delete?idx=4818&menu_id=MENU01&nowpage=1
 	@RequestMapping("/Delete")
 	public ModelAndView delete(
@@ -199,6 +206,33 @@ public class PdsController {
 		mv.setViewName( loc );
 		return mv;
 	}
+	
+	// 수정
+	// /UpdateForm?idx=4819&menu_id=MENU01&nowpage=1  => menu_id 와 nowpage 는 돌아올 주소를 찾는것이다
+	@RequestMapping("/UpdateForm")
+	public ModelAndView updateForm(
+			@RequestParam HashMap<String, Object> map ) {  // 넘어올 데이터를 Hashmap 으로 받는다
+		
+		// 메뉴목록
+		List<MenuDTO> menuList  = menuMapper.getMenuList();
+		
+		// 수정할 Board 정보 idx 로 검색
+		PdsDto        pds       = pdsService.getPds(map); 
+		 
+		// 수정할 Files 정보 idx 로 검색
+		List<FilesDto> fileList = pdsService.getFileList(map);
+		
+		ModelAndView   mv       = new ModelAndView();
+		mv.setViewName( "pds/update" );
+		mv.addObject("menuList", menuList);
+		mv.addObject("pds"     , pds     );
+		mv.addObject("fileList", fileList);		
+
+		
+		mv.addObject("map", map);
+		return mv;
+	}
+	
 	
 	//-----------------------------------------------------------------
 	// 파일다운로드
