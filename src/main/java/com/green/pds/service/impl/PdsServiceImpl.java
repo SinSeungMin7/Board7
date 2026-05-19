@@ -69,7 +69,7 @@ public class PdsServiceImpl implements PdsService {
 		// 3. Files 에 저장
 		List<FilesDto> fileList = (List<FilesDto>) map.get("fileList");
 		if( fileList.size() > 0 )
-			pdsMapper.setFileWriter( map );
+			pdsMapper.setFileWriter( map );  // insertfile
 		
 		
 	}

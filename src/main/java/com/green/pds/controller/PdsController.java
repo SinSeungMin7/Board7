@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -181,6 +182,24 @@ public class PdsController {
 		
 	}
 	
+	// /Delete?idx=4818&menu_id=MENU01&nowpage=1
+	@RequestMapping("/Delete")
+	public ModelAndView delete(
+			@RequestParam Map<String, Object> map ) {
+		System.out.println("delete map" + map);
+		
+		// db 에서 자료 삭제
+		pdsService.setDelete(map);
+		
+		// 삭제 이후에 목록으로 돌아가기위한 작업
+		ModelAndView mv = new ModelAndView();
+		String      loc = "redirect:/Pds/List"
+				           + "?menu_id=" + map.get("menu_id")
+				           + "&nowpage=" + map.get("now_page");				      		             
+		mv.setViewName( loc );
+		return mv;
+	}
+	
 	//-----------------------------------------------------------------
 	// 파일다운로드
 	//서버에서 바이너리데이터를 다운받는다 : data 덩어리
@@ -231,6 +250,7 @@ public class PdsController {
 		}
 	}
 
+	// 이부분은 복사해서 쓰면 된다 많이 사용하기때문에
 	// 다운로드 받을 파일의 header 정보 설정
 	private void setFileHeader(HttpServletResponse response, FilesDto fileInfo) 
 			throws UnsupportedEncodingException { // add throw 한것
@@ -241,10 +261,11 @@ public class PdsController {
 		        		 (String) fileInfo.getFilename(), "UTF-8") + "\";");
 		response.setHeader("Content-Transfer-Encoding", "binary");
 	//	response.setHeader("Content-Type", "application/download; utf-8"); // hwp 연결프로그램작동
-		response.setHeader("Content-Type", "application/octet-stream; utf-8"); // 순수 다운로드만
+		response.setHeader("Content-Type", "application/octet-stream; utf-8"); // 순수 다운로드만  Network 에서 header 누르면 나오는 정보
 		response.setHeader("Pragma", "no-cache;");
 		response.setHeader("Expires", "-1");
 	}
+	
 	
 	
 }
