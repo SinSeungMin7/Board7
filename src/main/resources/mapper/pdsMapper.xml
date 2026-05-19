@@ -138,6 +138,20 @@
 	  WHERE  FILE_NUM = #{file_num}
 	</select>
 	
+	<!-- deleteUploadFile : idx 에 해당하는 업로드 파일정보(Files) 들 삭제-->
+	<delete id="deleteUploadFile">
+	 DELETE
+	 FROM   FILES
+	 WHERE  IDX = #{idx}
+	</delete>
+	
+	<!-- setDelete : idx 에 해당하는 Board 정보를 삭제 -->
+	<delete id="setDelete">
+	 DELETE
+	 FROM   BOARD
+	 WHERE  IDX = #{idx}
+	</delete>
+	
 </mapper>
 
 

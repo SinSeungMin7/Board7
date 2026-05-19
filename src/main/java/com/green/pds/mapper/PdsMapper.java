@@ -27,4 +27,8 @@ public interface PdsMapper {
 
 	FilesDto getFileInfo(long file_num);
 
+	void deleteUploadFile(HashMap<String, Object> map);
+
+	void setDelete(HashMap<String, Object> map);
+
 }

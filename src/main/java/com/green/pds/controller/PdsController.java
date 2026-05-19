@@ -185,7 +185,7 @@ public class PdsController {
 	// /Delete?idx=4818&menu_id=MENU01&nowpage=1
 	@RequestMapping("/Delete")
 	public ModelAndView delete(
-			@RequestParam Map<String, Object> map ) {
+			@RequestParam HashMap<String, Object> map ) {
 		System.out.println("delete map" + map);
 		
 		// db 에서 자료 삭제
@@ -195,7 +195,7 @@ public class PdsController {
 		ModelAndView mv = new ModelAndView();
 		String      loc = "redirect:/Pds/List"
 				           + "?menu_id=" + map.get("menu_id")
-				           + "&nowpage=" + map.get("now_page");				      		             
+				           + "&nowpage=" + map.get("nowpage");				      		             
 		mv.setViewName( loc );
 		return mv;
 	}
