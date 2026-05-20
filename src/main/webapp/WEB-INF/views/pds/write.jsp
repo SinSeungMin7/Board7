@@ -52,8 +52,8 @@
   
     <h2 class="h2"><b id="mname"></b> 자료실 새 글 쓰기</h2>
     <form  action="/Pds/Write" method="post"
-           enctype = "multipart/form-data" >
-     <input type="hidden" name="menu_id" value="${ map.menu_id }" />  <!-- menu_id 를 name에 담고 눈에보이지않게 hidden -->
+          enctype = "multipart/form-data" > 
+     <input type="hidden" name="menu_id" value="${ map.menu_id }" />
      <input type="hidden" name="nowpage" value="${ map.nowpage }" />
      <table id="table1">
       <tr>
@@ -75,8 +75,8 @@
         <td>파일</td>  
         <td id = "tdfile">
           <input type="button"  id="btnAddFile"  value="파일추가(최대 100MByte)" /><br>
-          <input type="file"    name="upfile"    class="upfile" multiple /><br>  <!-- multiple은 여러개를 선택가능하게 해주는 옵션이다 -->  
-
+          <input type="file"    name="upfile"    class="upfile"  multiple /><br>   
+          
         </td>  
       </tr>  
       <tr>

@@ -19,16 +19,20 @@ public interface PdsMapper {
 
 	void setFileWriter(HashMap<String, Object> map);
 
-	void setReadConuntUpdate(HashMap<String, Object> map);
+	void setReadCountUpdate(HashMap<String, Object> map);
 
 	PdsDto getPds(HashMap<String, Object> map);
 
 	List<FilesDto> getFileList(HashMap<String, Object> map);
 
-	FilesDto getFileInfo(long file_num);
+	FilesDto getFileInfo(Long file_num);
 
 	void deleteUploadFile(HashMap<String, Object> map);
 
 	void setDelete(HashMap<String, Object> map);
+
+	void setUpdate(HashMap<String, Object> map);
+
+	void deleteUploadFileFileNum(long file_num);
 
 }

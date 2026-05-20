@@ -15,14 +15,16 @@ public interface PdsService {
 
 	void setWrite(HashMap<String, Object> map, MultipartFile[] uploadfiles);
 
-	void setReadConuntUpdate(HashMap<String, Object> map);
+	void setReadCountUpdate(HashMap<String, Object> map);
 
 	PdsDto getPds(HashMap<String, Object> map);
 
 	List<FilesDto> getFileList(HashMap<String, Object> map);
 
-	FilesDto getFileInfo(long file_num);
+	FilesDto getFileInfo(Long file_num);
 
 	void setDelete(HashMap<String, Object> map);
+
+	void setUpdate(HashMap<String, Object> map, MultipartFile[] uploadfiles);
 
 }

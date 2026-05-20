@@ -24,6 +24,7 @@
 	
 	<!-- getPdsList -->
 	<select  id="getPdsList">
+	
 	   SELECT
 	     IDX,
 	     MENU_ID,
@@ -48,109 +49,156 @@
 	  </where>
 	  ORDER  BY  IDX  DESC
 	  OFFSET  #{ offset }  ROWS  FETCH  NEXT  #{ numOfRows }  ROWS ONLY  
+		
+	
+	</select>
+	
+	<!-- setWrite : Board 에 저장  -->
+	<select  id="setWrite">
+	
+	  INSERT INTO  BOARD (
+	     IDX,
+	     MENU_ID,
+	     TITLE,
+	     CONTENT,
+	     WRITER,
+	     REGDATE,
+	     HIT
+	  )
+	    VALUES (
+	     ( SELECT NVL(MAX(IDX),0)+ 1 FROM BOARD ),
+	      #{ menu_id },
+	      #{ title   },
+	      #{ content },
+	      #{ writer  },
+	     SYSDATE,
+	     0	    
+	  )	
+	
 	</select>
 
-	<!-- setWrite : Board 에 저장 -->
-	<select id="setWrite">
-	  INSERT INTO BOARD (
-	  	IDX,
-	  	MENU_ID,
-	  	TITLE,
-	  	WRITER,
-	  	CONTENT,
-	  	REGDATE,
-	  	HIT
-	  )
-	   VALUES (
-	    (SELECT NVL(MAX(IDX),0)+ 1 FROM BOARD),
-	  	#{menu_id},
-	  	#{title},
-	  	#{writer},
-	  	#{content},
-	  	SYSDATE,
-	  	0
-	  )
-	</select>
-	
-	<!-- setFileWriter : Files 에 insert
-	     insert all : 한번에 여러줄을 insert 할 수 있는 명령
-	   	(SELECT NVL(MAX(FILE_NUM),0)FROM FILES), -> 한번만 실행 : 무결성제약조건 에러발생
+	<!-- 
+	  setFileWriter : Files 에 insert
+	  insert all : 한번에 여러줄을 insert 할 수 있는 명령 
+	  ( SELECT NVL( MAX( FILE_NUM), 0)+1 FROM FILES ), 한번만 실행 : 무결성제약조건에러발생
 	-->
-	<insert id="setFileWriter">
-	
-	  <foreach collection = "fileList"
-	           item       = "file"
-	           index      = "i" 
-	           open       = "INSERT ALL"       
-	           close      = "SELECT * FROM DUAL"
-	           separator  = " ">
-	           
-	   INTO FILES VALUES(
-	    (SELECT NVL(MAX(FILE_NUM),0)FROM FILES) + #{i} + 1,
-		(SELECT MAX( IDX ) FROM BOARD),
-		#{file.filename  },
-		#{file.fileext   },
-		#{file.sfilename }
-	   )
-	   
-	  </foreach>
+	<insert   id="setFileWriter">
+	  	  
+	  <foreach  collection = "fileList" 
+	            item       = "file"
+	            index      = "i"
+	            open       = "INSERT ALL" 
+	            close      = "SELECT * FROM DUAL"
+	            separator  = " " >
+	  
+	    INTO  FILES   VALUES(
+	        ( SELECT NVL( MAX( FILE_NUM), 0) FROM FILES ) + #{i} + 1,
+			( SELECT MAX( IDX ) FROM BOARD  ),
+			#{ file.filename   },
+			#{ file.fileext    },
+			#{ file.sfilename  }
+	    )
+	  
+	  </foreach>  
+	  
 	</insert>
 	
-	<!-- setReadConuntUpdate : 조회수 -->
-	<update id="setReadConuntUpdate">
-	  UPDATE BOARD
-	  SET    HIT = HIT + 1
-	  WHERE  IDX = #{idx} 
+	<!-- 조회수 -->
+	<update  id="setReadCountUpdate">
+	
+	  UPDATE   BOARD
+	   SET     HIT  = HIT + 1
+	   WHERE   IDX  = #{idx}	
+		
 	</update>
 	
 	<!-- getPds : 게시글 조회 -->
-	<select id="getPds">
-	  SELECT IDX,
-	         MENU_ID,
-	         TITLE,
-	         CONTENT,
-	         WRITER,
-	         TO_CHAR(REGDATE, 'YYYY-MM-DD HH24:MI:SS') REGDATE,
-	         HIT
-	   FROM  BOARD
-	   WHERE IDX = #{idx}
+	<select  id="getPds">
+	
+	  SELECT 
+	     IDX,
+	     MENU_ID,
+	     TITLE,
+	     CONTENT,
+	     WRITER,
+	     TO_CHAR( REGDATE, 'YYYY-MM-DD HH24:MI:SS')  REGDATE,
+	     HIT	  
+	   FROM     
+	     BOARD 	
+	   WHERE
+	     IDX   =  #{ idx }  
+	
 	</select>
 	
-	<!-- getFileList : idx 에 해당하는 파일목록 -->
-	<select id="getFileList">
-	  SELECT FILE_NUM,
-			 IDX,
-			 FILENAME,
-			 FILEEXT,
-			 SFILENAME
-	  FROM   FILES
-	  WHERE  IDX = #{idx}
+	<!--  getFileList : dix 에 해당하는 파일 목록 -->
+	<select  id="getFileList">
+	
+	  SELECT
+	    FILE_NUM,
+		IDX,
+		FILENAME,
+		FILEEXT,
+		SFILENAME
+	  FROM
+	    FILES
+	  WHERE
+	    IDX = #{ idx }  	
+	
 	</select>
 	
-	<!-- getFileInfo : file_num 로 파일정보를 조회 -->
-	<select id="getFileInfo">
-	  SELECT FILE_NUM,
-			 IDX,
-			 FILENAME,
-			 FILEEXT,
-			 SFILENAME
-	  FROM   FILES
-	  WHERE  FILE_NUM = #{file_num}
-	</select>
+	<!--  file_num 로 파일정보를 조회 getFileInfo -->
+	<select  id="getFileInfo">
+	 
+	  SELECT
+	    FILE_NUM,
+		IDX,
+		FILENAME,
+		FILEEXT,
+		SFILENAME
+	  FROM
+	    FILES
+	  WHERE
+	    FILE_NUM = #{ file_num }
 	
-	<!-- deleteUploadFile : idx 에 해당하는 업로드 파일정보(Files) 들 삭제-->
-	<delete id="deleteUploadFile">
-	 DELETE
-	 FROM   FILES
-	 WHERE  IDX = #{idx}
+	</select> 
+	
+	<!-- deleteUploadFile : idx 에 해당하는 업로드 파일정보(Files)들 삭제 -->
+	<delete  id="deleteUploadFile">
+	
+      DELETE
+       FROM    FILES
+       WHERE   IDX  = #{ idx } 
+	
 	</delete>
+	
+	<!-- deleteUploadFileFileNum -->
+	<delete  id = "deleteUploadFileFileNum">
+	
+	  DELETE
+       FROM    FILES
+       WHERE   FILE_NUM  = #{ file_num }
+	
+	</delete>
+	
 	
 	<!-- setDelete : idx 에 해당하는 Board 정보를 삭제 -->
-	<delete id="setDelete">
-	 DELETE
-	 FROM   BOARD
-	 WHERE  IDX = #{idx}
+	<delete  id="setDelete">
+	
+	  DELETE
+	   FROM    BOARD
+	   WHERE   IDX   =  #{ idx }	
+	
 	</delete>
+	
+	<!--  setUpdate -->
+	<update  id="setUpdate">
+	
+      UPDATE  BOARD
+       SET    TITLE     = #{ title   }
+             , CONTENT  = #{ content }  
+       WHERE  IDX = #{ idx }
+	
+	</update>
 	
 </mapper>
 

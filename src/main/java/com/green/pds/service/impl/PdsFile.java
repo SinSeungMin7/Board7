@@ -37,7 +37,7 @@ public class PdsFile {
 			// d:\\dev\\springboot\\data\\data.abc.txt	: 업로드된 파일정보	
 			// d:/dev/springboot/data/data.abc.txt         	
 			String  fileName =  
-					( orgName.lastIndexOf("\\") < 0 )   // '\' 못찾으면 -1 
+					( orgName.lastIndexOf("\\") < 0 )   // '\' 못찾으면 -1   
 					? orgName
 					: orgName.substring( orgName.lastIndexOf("\\") + 1 ) // data.abc.txt
 					;
@@ -58,12 +58,12 @@ public class PdsFile {
 			String  uuid        =  UUID.randomUUID().toString();    
 			
 			// 저장할 sfilename 생성
-			// File.separator : 윈도우면 "\\", 리눅스, 맥 "/"
-			// saveName : 실제 저장될 서버의 경로 + 생성된 날짜형 폴더명 + uuid + 파일명
+			// File.separator : "\\". "/"
+			// saveName : 실제저장될 서버의 경로 + 생성된 날짜형 폴더명 + uuid + 파일명
 			String  saveName    =  uploadPath + File.separator
 					            +  folderPath + File.separator
 					            +  uuid       + "."  + fileName;   // 실제 저장될 파일명
-			// saveName : 생성된 날짜형 폴더명 + uuid + 파일명
+			// saveName2 : 생성된 날짜형 폴더명 + uuid + 파일명
 			String  saveName2   =  folderPath + File.separator
 					            +  uuid       + "."  + fileName;   // sfilename
 			
@@ -114,24 +114,24 @@ public class PdsFile {
 		
 		return   folderPath;
 	}
+	
+	// 실제 파일 삭제 : fileList 에 있는 여러 파일
 
-	// 실제 파일 삭제 : file List 에 있는
 	public static void delete(String uploadPath, List<FilesDto> fileList) {
 		
-		String path = uploadPath; // D:/dev/springboot/data/
+		String   path  =  uploadPath;  // D:/dev/springboot/data/
 		
 		fileList.forEach( ( file ) -> {
-			String sfile = file.getSfilename();  // 실제 저장된 파일명
+			String   sfile  =  file.getSfilename();  // 실제 저장된 파일명
 			
-			File   dfile = new File(path + sfile);
-			if(dfile.exists())
+			File     dfile  =  new File( path + sfile );
+			if( dfile.exists()  )
 				dfile.delete();
+			
 		});
 		
 	}
-		
-	
- 
+
 }
 
 

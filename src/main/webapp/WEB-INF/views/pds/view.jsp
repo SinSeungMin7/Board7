@@ -113,18 +113,18 @@
       </tr>
       
       <tr>
-      	<td>파일</td>
-      	<td colspan="3" id="tdfile">
-      	
-      	<c:forEach var="file" items="${fileList}" >
-      		<div>
-      			<a href="/Pds/filedownload/${file.file_num }">
-      				${file.filename}
-      			</a>
-      		</div>
-      	</c:forEach>
-      	
-      	</td>      	
+        <td>파일</td>
+        <td colspan="3" id="tdfile">
+        
+          <c:forEach  var="file"  items="${ fileList }">
+            <div>
+              <a href="/Pds/filedownload/${ file.file_num }">
+                ${ file.filename }
+              </a>
+            </div>
+          </c:forEach>
+        
+        </td>
       </tr>
      
       <tr>
@@ -132,7 +132,7 @@
           <a href="/Pds/WriteForm?menu_id=${map.menu_id}&nowpage=${map.nowpage}" 
               class="btn btn-primary">새글쓰기</a>
           
-<%--           <c:if test="${ sessionScope.login.userid eq board.writer }"> --%>
+         <%--  <c:if test="${ sessionScope.login.userid eq board.writer }"> --%>
           <a href="/Pds/UpdateForm?idx=${map.idx}&menu_id=${map.menu_id}&nowpage=${map.nowpage}" 
              class="btn btn-warning">수정</a>
           <a href="/Pds/Delete?idx=${map.idx}&menu_id=${map.menu_id}&nowpage=${map.nowpage}" 
